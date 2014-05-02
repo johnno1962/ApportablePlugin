@@ -2,7 +2,7 @@
 
 ### Plugin for working with apportable in Xcode
 
-A simple plugin to run apportable commands from inside Xcode as a start point. To use, build the project 
+A simple plugin to run apportable commands from inside Xcode as a starting point. To use, build the project 
 which will linstall to the correct directory and then restart Xcode. Open an apportable project and use 
 the new menu at the end of Xcode's "Product" menu to run the apportable debug/load/log/kill commands. 
 You can type into the console windows opened or type control-c to interrupt the command. The "apportable 
