@@ -3,7 +3,7 @@
 //  ApportablePlugin
 //
 //  Created by John Holdsworth on 01/05/2014.
-//
+//  Copyright (c) 2014 John Holdsworth. All rights reserved.
 //
 
 #import "APPluginMenuController.h"
@@ -13,7 +13,6 @@
 
 + (void)pluginDidLoad:(NSBundle *)plugin
 {
-
     static APPluginMenuController *apportablePlugin;
 	static dispatch_once_t onceToken;
 
@@ -27,15 +26,12 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
 {
-
     if ( ![[NSBundle bundleForClass:[self class]] loadNibNamed:@"APPluginMenuController" owner:self topLevelObjects:NULL] )
         NSLog( @"APPluginMenuController: Could not load interface." );
 
 	NSMenu *productMenu = [[[NSApp mainMenu] itemWithTitle:@"Product"] submenu];
-	if (productMenu) {
-		[productMenu addItem:[NSMenuItem separatorItem]];
-		[productMenu addItem:self.apportableMenu];
-    }
+    [productMenu addItem:[NSMenuItem separatorItem]];
+    [productMenu addItem:self.apportableMenu];
 }
 
 - (NSString *)projectRoot

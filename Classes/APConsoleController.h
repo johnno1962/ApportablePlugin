@@ -18,6 +18,6 @@
 @property (nonatomic,strong) NSTask *task;
 
 - (instancetype)initNib:(NSString *)nibName project:(NSString *)projectRoot command:(NSString *)command;
-- (void)keyDown:(NSEvent *)theEvent;
+- (void)keyDownInTextViewEvent:(NSEvent *)theEvent;
 
 @end

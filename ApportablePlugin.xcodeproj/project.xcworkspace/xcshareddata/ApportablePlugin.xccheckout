@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>E29DE24F-1B66-402E-9381-A192C6AFF340</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ApportablePlugin</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>896251A8-7A25-4B0E-93A8-C5EA4AC48D94</key>
+		<string>https://github.com/johnno1962/ApportablePlugin.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ApportablePlugin.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>896251A8-7A25-4B0E-93A8-C5EA4AC48D94</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/johnno1962/ApportablePlugin.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>896251A8-7A25-4B0E-93A8-C5EA4AC48D94</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>896251A8-7A25-4B0E-93A8-C5EA4AC48D94</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ApportablePlugin</string>
+		</dict>
+	</array>
+</dict>
+</plist>

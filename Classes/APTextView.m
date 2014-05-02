@@ -13,7 +13,7 @@
 
 - (void)keyDown:(NSEvent *)theEvent
 {
-    [(APConsoleController *)self.delegate keyDown:theEvent];
+    [(APConsoleController *)self.delegate keyDownInTextViewEvent:theEvent];
 }
 
 @end

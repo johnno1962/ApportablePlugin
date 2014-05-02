@@ -20,7 +20,8 @@ static NSMutableArray *controllers;
             controllers = [[NSMutableArray alloc] init];
         [controllers addObject:self];
 
-        [[NSBundle bundleForClass:[self class]] loadNibNamed:nibName owner:self topLevelObjects:NULL];
+        if ( ![[NSBundle bundleForClass:[self class]] loadNibNamed:nibName owner:self topLevelObjects:NULL] )
+            NSLog( @"APConsoleController: Could not load interface %@", nibName );
 
         // need to add to Windows menu manually
         // for some reason this is not reliable
@@ -107,7 +108,7 @@ static NSMutableArray *controllers;
 /*
  * key down event in TextView, relay to running command
  */
-- (void)keyDown:(NSEvent *)theEvent
+- (void)keyDownInTextViewEvent:(NSEvent *)theEvent
 {
     NSString *input = [[theEvent characters] stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
     if ( [input isEqualToString:@"\003"] ) {
