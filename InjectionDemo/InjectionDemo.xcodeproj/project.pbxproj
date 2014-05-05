@@ -116,7 +116,6 @@
 				BBBA5B19155EB59000421DA4 /* Sources */,
 				BBBA5B1A155EB59000421DA4 /* Frameworks */,
 				BBBA5B1B155EB59000421DA4 /* Resources */,
-				BB89E54D156082140039CFFF /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -165,22 +164,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		BB89E54D156082140039CFFF /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "echo \"$CODESIGNING_FOLDER_PATH\" >/tmp/\"$PROJECT_NAME.$USER\" && echo \"$CODE_SIGN_IDENTITY\" >>/tmp/\"$PROJECT_NAME.$USER\" && exit; ";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		BBBA5B19155EB59000421DA4 /* Sources */ = {
