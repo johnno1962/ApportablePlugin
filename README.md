@@ -1,6 +1,6 @@
-# ![Icon](http://injectionforxcode.johnholdsworth.com/appdroid.png) ApportablePlugin
+# ![Icon](http://injectionforxcode.johnholdsworth.com/appdroid.png) An ApportablePlugin
 
-### Plugin for working with apportable in Xcode
+### A plugin for working with apportable in Xcode
 
 A simple plugin to run apportable commands from inside Xcode as a starting point. To use, build the project 
 which will linstall to the correct directory and then restart Xcode. Open an apportable project and use 
@@ -11,10 +11,10 @@ log" window can be filtered by entering a regular expression. Windows close auto
 ### Live Coding
 
 The plugin now also supports live coding where you can make changes the implementation of a running
-program. The main.m of the project project must first have been patched slightly by using the 
-"Product/Apportable/Prepare" menu item. After this, when the program is running or being debugged,
+program. The main.m of the project project must first have been slightly patched by using the menu item
+"Product/Apportable/Prepare". After this, when the program is running or being debugged,
 changes to the current selected file can be applied using the "Apportable/Patch" command. As this
-requires a debugging connection if one if not already open the plugin will attach to the program.
+requires a debugging connection, if one is not already open the plugin will attach to the program.
 
 Live Coding works by #importing the changed class into a small stub of code which lists the classes
 being loaded which is compiled and the resulting shared library copied to phone. gdb is then messaged 
