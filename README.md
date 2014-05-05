@@ -8,6 +8,20 @@ the new menu at the end of Xcode's "Product" menu to run the apportable debug/lo
 You can type into the console windows opened or type control-c to interrupt the command. The "apportable 
 log" window can be filtered by entering a regular expression. Windows close automatically on sucess.
 
+### Live Coding
+
+The plugin now also supports live coding where you can make changes the implementation of a running
+program. The main.m of the project project must first have been patched slightly by using the 
+"Product/Apportable/Prepare" menu item. After this, when the program is running or being debugged,
+changes to the current selected file can be applied using the "Apportable/Patch" command. As this
+requires a debugging connection if one if not already open the plugin will attach to the program.
+
+Live Coding works by #importing the changed class into a small stub of code which lists the classes
+being loaded which is compiled and the resulting shared library copied to phone. gdb is then messaged 
+by the plugin to call [APLiveCoding inject:"/data/local/tmp/APLiveCodingN.so"] which loads and calls the 
+stub in the shared library. This registers any selector references and "swizzles" the new implementations 
+onto the original class. Remember to "Apportable/Prepare" your project to make APLiveCoding available.
+
 ### MIT License
 
 Copyright (C) 2014 John Holdsworth

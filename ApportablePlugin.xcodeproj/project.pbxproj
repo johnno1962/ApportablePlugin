@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7F2EB89C145057F200E97A87 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F2EB899145057EA00E97A87 /* AppKit.framework */; };
+		BB23108519158D500008E28B /* inject.pl in Resources */ = {isa = PBXBuildFile; fileRef = BB23107C19154CF00008E28B /* inject.pl */; };
+		BB286F5F19167B92001257FC /* prepare.pl in Resources */ = {isa = PBXBuildFile; fileRef = BB553A6B191676A50005E800 /* prepare.pl */; };
 		BB5CF6321912DBD00052E10B /* APConsoleController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CF6281912DBD00052E10B /* APConsoleController.m */; };
 		BB5CF6331912DBD00052E10B /* APConsoleWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = BB5CF6291912DBD00052E10B /* APConsoleWindow.xib */; };
 		BB5CF6341912DBD00052E10B /* APLogController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CF62B1912DBD00052E10B /* APLogController.m */; };
@@ -24,6 +26,10 @@
 		7F2EB899145057EA00E97A87 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		8D5B49B6048680CD000E48DA /* ApportablePlugin.xcplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ApportablePlugin.xcplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D5B49B7048680CD000E48DA /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BB23107C19154CF00008E28B /* inject.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = inject.pl; sourceTree = "<group>"; };
+		BB4E31041915943D00CC72EB /* APLiveCoding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APLiveCoding.h; sourceTree = "<group>"; };
+		BB4E31051915943D00CC72EB /* APLiveCoding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APLiveCoding.m; sourceTree = "<group>"; };
+		BB553A6B191676A50005E800 /* prepare.pl */ = {isa = PBXFileReference; lastKnownFileType = text.script.perl; path = prepare.pl; sourceTree = "<group>"; };
 		BB5CF6271912DBD00052E10B /* APConsoleController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APConsoleController.h; sourceTree = "<group>"; };
 		BB5CF6281912DBD00052E10B /* APConsoleController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APConsoleController.m; sourceTree = "<group>"; };
 		BB5CF6291912DBD00052E10B /* APConsoleWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = APConsoleWindow.xib; sourceTree = "<group>"; };
@@ -78,6 +84,8 @@
 			children = (
 				BB82F0CC1913D15F0015AE7A /* README.md */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
+				BB553A6B191676A50005E800 /* prepare.pl */,
+				BB23107C19154CF00008E28B /* inject.pl */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -102,6 +110,8 @@
 				BB5CF62A1912DBD00052E10B /* APLogController.h */,
 				BB5CF62B1912DBD00052E10B /* APLogController.m */,
 				BB5CF62C1912DBD00052E10B /* APLogWindow.xib */,
+				BB4E31041915943D00CC72EB /* APLiveCoding.h */,
+				BB4E31051915943D00CC72EB /* APLiveCoding.m */,
 				BB5CF62F1912DBD00052E10B /* APTextView.h */,
 				BB5CF6301912DBD00052E10B /* APTextView.m */,
 			);
@@ -118,6 +128,7 @@
 				8D5B49B1048680CD000E48DA /* Sources */,
 				8D5B49B3048680CD000E48DA /* Frameworks */,
 				BB5251F8160A2EF700276EB3 /* Resources */,
+				BB553A6D19167A020005E800 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -165,11 +176,29 @@
 				BB5CF6331912DBD00052E10B /* APConsoleWindow.xib in Resources */,
 				BB5CF6351912DBD00052E10B /* APLogWindow.xib in Resources */,
 				BB82F0CD1913D15F0015AE7A /* README.md in Resources */,
+				BB23108519158D500008E28B /* inject.pl in Resources */,
 				BBF5D8E31912DFCA0037CE2E /* APPluginMenuController.xib in Resources */,
+				BB286F5F19167B92001257FC /* prepare.pl in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		BB553A6D19167A020005E800 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp -r Classes/APLiveCoding.* \"$INSTALL_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		8D5B49B1048680CD000E48DA /* Sources */ = {

@@ -32,9 +32,9 @@
     self.console.string = [self filterLinesByCurrentRegularExpression:self.lineBuffer];
 }
 
-- (void)insertText:(NSString *)outStr
+- (void)insertText:(NSString *)output
 {
-    NSMutableArray *newLlines = [[outStr componentsSeparatedByString:@"\n"] mutableCopy];
+    NSMutableArray *newLlines = [[output componentsSeparatedByString:@"\n"] mutableCopy];
 
     if ( [newLlines count] && [newLlines[[newLlines count]-1] length] == 0 )
         [newLlines removeObjectAtIndex:[newLlines count]-1];
@@ -43,7 +43,9 @@
         _lineBuffer = [[NSMutableArray alloc] init];
     [self.lineBuffer addObjectsFromArray:newLlines];
 
-    [self.console insertText:[self filterLinesByCurrentRegularExpression:newLlines]];
+    NSString *filtered = [self filterLinesByCurrentRegularExpression:newLlines];
+    if ( [filtered length] )
+        [super insertText:filtered];
 }
 
 @end

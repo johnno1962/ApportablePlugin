@@ -32,6 +32,25 @@
 	NSMenu *productMenu = [[[NSApp mainMenu] itemWithTitle:@"Product"] submenu];
     [productMenu addItem:[NSMenuItem separatorItem]];
     [productMenu addItem:self.apportableMenu];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(selectionDidChange:)
+                                                 name:NSTextViewDidChangeSelectionNotification object:nil];
+}
+
+- (void)selectionDidChange:(NSNotification *)notification
+{
+    id object = [notification object];
+	if ([object isKindOfClass:NSClassFromString(@"DVTSourceTextView")] &&
+        [[object delegate] respondsToSelector:@selector(document)])
+        self.lastTextView = object;
+}
+
+- (NSString *)selectedFile
+{
+    NSDocument *doc = [(id)[self.lastTextView delegate] document];
+    [doc saveDocument:self];
+    return [[doc fileURL] path];
 }
 
 - (NSString *)projectRoot
@@ -58,27 +77,92 @@
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
-    return [self projectRoot] != nil;
+    if ( [menuItem action] == @selector(patch:) )
+        return [[self selectedFile] hasSuffix:@".m"];
+    else
+        return [self projectRoot] != nil;
 }
 
-- (IBAction)load:sender
+static __weak APConsoleController *debugger;
+static int revision;
+
+- (void)startDebugger:(NSString *)command
 {
-    (void)[[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot] command:@"apportable load"];
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-unsafe-retained-assign"
+    debugger = [[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot]
+                                            command:command];
+#pragma clang diagnostic pop
+}
+
+- (IBAction)prepare:sender
+{
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    NSTask *task = [[NSTask alloc] init];
+
+    task.launchPath = @"/bin/bash";
+    task.currentDirectoryPath = [self projectRoot];
+    task.arguments = @[@"-c", [NSString stringWithFormat:@"\"%@\" \"%@\" 2>&1",
+                               [bundle pathForResource:@"prepare" ofType:@"pl"],
+                               [bundle pathForResource:@"APLiveCoding" ofType:@"m"]]];
+
+    [task launch];
+    [task waitUntilExit];
 }
 
 - (IBAction)debug:sender
 {
-    (void)[[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot] command:@"apportable debug"];
+    [self startDebugger:@"apportable debug"];
+    [debugger sendTask:@"c\n"];
+}
+
+- (IBAction)attach:sender
+{
+    [self startDebugger:@"apportable just_attach"];
+}
+
+- (IBAction)patch:sender
+{
+    if ( !debugger && sender )
+        [self attach:sender];
+
+    if ( debugger.task && [debugger.console.string rangeOfString:@"(gdb)"].location == NSNotFound ) {
+        [self performSelector:@selector(patch:) withObject:nil afterDelay:.5];
+        return;
+    }
+
+    NSString *shlib = [NSString stringWithFormat:@"/data/local/tmp/APLiveCoding%d.so", ++revision];
+    NSTask *task = [[NSTask alloc] init];
+
+    task.launchPath = @"/bin/bash";
+    task.currentDirectoryPath = [self projectRoot];
+    task.arguments = @[@"-c", [NSString stringWithFormat:@"\"%@\" \"%@\" \"%@\" \"%@\" 2>&1",
+                               [[NSBundle bundleForClass:[self class]] pathForResource:@"inject" ofType:@"pl"],
+                               [self projectRoot], shlib, [self selectedFile]]];
+
+    task.standardInput = [[NSPipe alloc] init];
+    task.standardOutput = [[NSPipe alloc] init];
+
+    NSString *gdbLoadCommand = [NSString stringWithFormat:@"p [APLiveCoding inject:\"%@\"]\nc\n", shlib];
+    [debugger runTask:task sendOnCompletetion:gdbLoadCommand];
+}
+
+- (IBAction)load:sender
+{
+    (void)[[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot]
+                                       command:@"apportable load"];
 }
 
 - (IBAction)kill:sender
 {
-    (void)[[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot] command:@"apportable kill"];
+    (void)[[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot]
+                                       command:@"apportable kill"];
 }
 
 - (IBAction)log:sender
 {
-    (void)[[APLogController alloc] initNib:@"APLogWindow" project:[self projectRoot] command:@"apportable log"];
+    (void)[[APLogController alloc] initNib:@"APLogWindow" project:[self projectRoot]
+                                   command:@"apportable log"];
 }
 
 @end

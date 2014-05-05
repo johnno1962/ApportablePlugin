@@ -13,7 +13,16 @@
 
 - (void)keyDown:(NSEvent *)theEvent
 {
-    [(APConsoleController *)self.delegate keyDownInTextViewEvent:theEvent];
+    if ( ![(APConsoleController *)self.delegate handleTextViewInput:[theEvent characters]] )
+        [super keyDown:theEvent];
+}
+
+- (void)paste:(id)sender
+{
+    NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    NSString *input = [pb stringForType:NSPasteboardTypeString];
+    if ( ![(APConsoleController *)self.delegate handleTextViewInput:input] )
+        [super paste:sender];
 }
 
 @end

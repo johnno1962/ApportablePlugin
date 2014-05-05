@@ -15,9 +15,15 @@
 @property (nonatomic,strong) IBOutlet NSMenuItem *separator;
 @property (nonatomic,strong) IBOutlet NSMenuItem *menuItem;
 
+@property (nonatomic,strong) NSMutableArray *inputHistory;
+@property (nonatomic,assign) NSUInteger historyPointer;
+@property (nonatomic,assign) NSUInteger startBuffered;
 @property (nonatomic,strong) NSTask *task;
 
 - (instancetype)initNib:(NSString *)nibName project:(NSString *)projectRoot command:(NSString *)command;
-- (void)keyDownInTextViewEvent:(NSEvent *)theEvent;
+- (void)runTask:(NSTask *)task sendOnCompletetion:(NSString *)gdbCommand;
+- (BOOL)handleTextViewInput:(NSString *)characters;
+- (void)insertText:(NSString *)output;
+- (void)sendTask:(NSString *)input;
 
 @end

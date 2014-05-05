@@ -8,20 +8,19 @@
 
 #import "APConsoleController.h"
 
-static NSMutableArray *controllers;
+static NSMutableArray *visibleControllers;
 
 @implementation APConsoleController
 
 - (instancetype)initNib:(NSString *)nibName project:(NSString *)projectRoot command:(NSString *)command
 {
-
     if ( (self = [super init]) && projectRoot ) {
-        if ( !controllers )
-            controllers = [[NSMutableArray alloc] init];
-        [controllers addObject:self];
+        if ( !visibleControllers )
+            visibleControllers = [[NSMutableArray alloc] init];
+        [visibleControllers addObject:self];
 
         if ( ![[NSBundle bundleForClass:[self class]] loadNibNamed:nibName owner:self topLevelObjects:NULL] )
-            NSLog( @"APConsoleController: Could not load interface %@", nibName );
+            NSLog( @"APConsoleController: Could not load interface '%@'", nibName );
 
         // need to add to Windows menu manually
         // for some reason this is not reliable
@@ -29,17 +28,20 @@ static NSMutableArray *controllers;
         [[self windowMenu] addItem:self.separator];
         [[self windowMenu] addItem:self.menuItem];
 
-        self.window.representedFilename = projectRoot;
         self.window.title = command;
+        self.window.representedFilename = projectRoot;
         [self.window makeKeyAndOrderFront:self];
 
         self.task = [[NSTask alloc] init];
         self.task.launchPath = @"/bin/bash";
         self.task.currentDirectoryPath = projectRoot;
-        self.task.arguments = @[@"-c", [NSString stringWithFormat:@"export PATH=\"~/.apportable/SDK/bin:$PATH\" && "
-                                   "exec %@ 2>&1", command]];
+        self.task.arguments = @[@"-c", [NSString stringWithFormat:@"export PATH="
+                                        "\"~/.apportable/SDK/bin:$PATH\" && exec %@ 2>&1", command]];
 
-        [self runTask:self.task];
+        self.task.standardInput = [[NSPipe alloc] init];
+        self.task.standardOutput = [[NSPipe alloc] init];
+
+        [self runTask:self.task sendOnCompletetion:nil];
     }
 
     return self;
@@ -53,40 +55,43 @@ static NSMutableArray *controllers;
  * Thanks to NSTask tutorial by Andy Pereira: http://www.raywenderlich.com/36537/nstask-tutorial
  */
 
-- (void)runTask:(NSTask *)task
+- (void)runTask:(NSTask *)aTask sendOnCompletetion:(NSString *)gdbCommand
 {
-
-    dispatch_queue_t taskQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
-    dispatch_async(taskQueue, ^{
+    dispatch_queue_t backgroundQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+    dispatch_async(backgroundQueue, ^{
 
         @try {
-            task.standardInput = [[NSPipe alloc] init];
-            task.standardOutput = [[NSPipe alloc] init];
-
-            NSFileHandle *readHandle = [task.standardOutput fileHandleForReading];
+            NSFileHandle *readHandle = [aTask.standardOutput fileHandleForReading];
             [readHandle waitForDataInBackgroundAndNotify];
 
             id observer = [[NSNotificationCenter defaultCenter] addObserverForName:NSFileHandleDataAvailableNotification
                                                                             object:readHandle queue:nil
                                                                         usingBlock:^(NSNotification *notification) {
 
-                NSData *output = [readHandle availableData];
-                NSString *outStr = [[NSString alloc] initWithData:output encoding:NSUTF8StringEncoding];
+                NSData *outputData = [readHandle availableData];
+                NSString *output = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
 
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    [self insertText:outStr];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self insertText:output];
                 });
 
                 [readHandle waitForDataInBackgroundAndNotify];
             }];
 
-            [task launch];
-            [task waitUntilExit];
+            [aTask launch];
+            [aTask waitUntilExit];
 
             dispatch_sync(dispatch_get_main_queue(), ^{
-                if ( [task terminationStatus] == 0 )
-                    [self.window performSelector:@selector(close) withObject:nil afterDelay:3.];
-                self.task = nil;
+                if ( [aTask terminationStatus] == 0 ) {
+                    if ( !gdbCommand ) {
+                        [self.window performSelector:@selector(close) withObject:nil afterDelay:3.];
+                        self.task = nil;
+                    }
+                    else {
+                        [self.task interrupt];
+                        [self performSelector:@selector(handleTextViewInput:) withObject:gdbCommand afterDelay:.1];
+                    }
+                }
             });
 
             [[NSNotificationCenter defaultCenter] removeObserver:observer];
@@ -100,25 +105,98 @@ static NSMutableArray *controllers;
 /*
  * insert text into text view, overridden for filtering in APLogController.m
  */
-- (void)insertText:(NSString *)outStr
+- (void)insertText:(NSString *)output
 {
-    [self.console insertText:outStr];
+    [self.console setSelectedRange:NSMakeRange([self.console.string length], 0)];
+    [self.console insertText:output];
 }
 
 /*
  * key down event in TextView, relay to running command
  */
-- (void)keyDownInTextViewEvent:(NSEvent *)theEvent
+- (BOOL)handleTextViewInput:(NSString *)characters
 {
-    NSString *input = [[theEvent characters] stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
-    if ( [input isEqualToString:@"\003"] ) {
-        [self.task interrupt];
-        return;
-    }
+    NSString *input = [characters stringByReplacingOccurrencesOfString:@"\r" withString:@"\n"];
 
-    NSData *data = [input dataUsingEncoding:NSUTF8StringEncoding];
-    [[self.task.standardInput fileHandleForWriting] writeData:data];
-    [self.console insertText:input];
+    if ( !self.inputHistory )
+        self.inputHistory = [[NSMutableArray alloc] init];
+
+    if ( !self.startBuffered )
+        self.startBuffered = [[self.console selectedRanges][0] rangeValue].location;
+
+    switch ( [input characterAtIndex:0] ) {
+
+        // contrl-a
+        case 0x01:
+            [self.console setSelectedRange:NSMakeRange(self.startBuffered, 0)];
+            return TRUE;
+
+        // control-c
+        case 0x03:
+            [self.task interrupt];
+            self.startBuffered = 0;
+            return TRUE;
+
+        // up arrow
+        case 0xF700:
+            if ( self.historyPointer > 0 ) {
+                if ( self.historyPointer == [self.inputHistory count] )
+                    [self.inputHistory addObject:[self bufferedInput]];
+                self.historyPointer--;
+                [self useHistory];
+            }
+            return TRUE;
+
+        // down arrow
+        case 0xF701:
+            if ( self.historyPointer+1 < [self.inputHistory count] ) {
+                self.historyPointer++;
+                [self useHistory];
+            }
+            return TRUE;
+
+        default:
+            if ( [input characterAtIndex:[input length]-1] != '\n' )
+                return FALSE;
+            else {
+                [self sendTask:[[self bufferedInput] stringByAppendingString:input]];
+                if ( [[self bufferedInput] length] )
+                    [self.inputHistory addObject:[self bufferedInput]];
+                self.historyPointer = [self.inputHistory count];
+                [self insertText:input];
+                self.startBuffered = 0;
+                return TRUE;
+            }
+    }
+}
+
+- (NSString *)bufferedInput
+{
+    return [self.console.string substringWithRange:[self bufferedRange]];
+}
+
+- (NSRange)bufferedRange
+{
+    NSUInteger end = [self.console.string length], start = MIN(self.startBuffered, end);
+    return NSMakeRange(start, end>start ? end-start : 0);
+}
+
+- (void)useHistory
+{
+    [self.console replaceCharactersInRange:[self bufferedRange]
+                                withString:self.inputHistory[self.historyPointer]];
+    [self.console setSelectedRange:NSMakeRange([self.console.string length], 0)];
+}
+
+- (void)sendTask:(NSString *)input
+{
+    @try {
+        NSData *data = [input dataUsingEncoding:NSUTF8StringEncoding];
+        [[self.task.standardInput fileHandleForWriting] writeData:data];
+    }
+    @catch (NSException *exception) {
+        NSLog( @"Problem writing to task: %@", [exception description] );
+    }
 }
 
 - (void)windowWillClose:(NSNotification *)notification
@@ -131,7 +209,7 @@ static NSMutableArray *controllers;
     if ( [windowMenu indexOfItem:self.menuItem] != -1 )
         [windowMenu removeItem:self.menuItem];
 
-    [controllers removeObject:self];
+    [visibleControllers removeObject:self];
 }
 
 @end
