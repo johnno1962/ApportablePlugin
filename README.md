@@ -22,6 +22,13 @@ by the plugin to call [APLiveCoding inject:"/data/local/tmp/APLiveCodingN.so"] w
 stub in the shared library. This registers any selector references and "swizzles" the new implementations 
 onto the original class. Remember to "Apportable/Prepare" your project to make APLiveCoding available.
 
+### Demo App
+
+A small demo app is included in the plugin which can be opened using the "Apportable/Demo" menu item.
+Run the applpication using "Apportable/Debug" and edit the file "INRoseView.m" to see how changing 
+the various hard coded values affects the displayed appearance demonstrating the new implementation
+has been loaded.
+
 ### MIT License
 
 Copyright (C) 2014 John Holdsworth

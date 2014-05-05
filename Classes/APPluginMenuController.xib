@@ -16,8 +16,8 @@
             <modifierMask key="keyEquivalentModifierMask"/>
             <menu key="submenu" title="Apportable" id="2xB-Mr-bpX">
                 <items>
-                    <menuItem title="Patch" id="gYX-c6-9ey">
-                        <modifierMask key="keyEquivalentModifierMask"/>
+                    <menuItem title="Patch" keyEquivalent="x" id="gYX-c6-9ey">
+                        <modifierMask key="keyEquivalentModifierMask" control="YES"/>
                         <connections>
                             <action selector="patch:" target="-2" id="lk1-rT-0uc"/>
                         </connections>
@@ -56,6 +56,12 @@
                         <modifierMask key="keyEquivalentModifierMask"/>
                         <connections>
                             <action selector="prepare:" target="-2" id="hbQ-2L-qXL"/>
+                        </connections>
+                    </menuItem>
+                    <menuItem title="Demo" id="UvJ-jq-ETL">
+                        <modifierMask key="keyEquivalentModifierMask"/>
+                        <connections>
+                            <action selector="demo:" target="-2" id="rhE-GT-IMg"/>
                         </connections>
                     </menuItem>
                 </items>

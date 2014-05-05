@@ -1,5 +1,5 @@
 //
-//  APMenuConctroller.h
+//  APPluginMenuController.h
 //  ApportablePlugin
 //
 //  Created by John Holdsworth on 01/05/2014.

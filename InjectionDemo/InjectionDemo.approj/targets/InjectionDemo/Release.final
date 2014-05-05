@@ -1,0 +1,185 @@
+{
+    "assets": [
+        {
+            "asset": "InjectionDemo/en.lproj/InfoPlist.strings", 
+            "target": "en.lproj/InfoPlist.strings"
+        }, 
+        {
+            "asset": "InjectionDemo/Icon.png", 
+            "target": "Icon.png"
+        }
+    ], 
+    "config": {
+        "APPLICATION_FULL_NAME": "InjectionDemo", 
+        "APPLICATION_IDENTIFIER": "com.johnholdsworth.InjectionDemo", 
+        "APPLICATION_NAME": "InjectionDemo", 
+        "FEATURES": [
+            "portrait"
+        ], 
+        "ICU_CONFIG": "normal", 
+        "LONG_VERSION": "1.0", 
+        "SHORT_VERSION": "1.0", 
+        "TEMPLATE_VALUES": {
+            "EXECUTABLE_NAME": "InjectionDemo", 
+            "PRODUCT_NAME": "InjectionDemo"
+        }
+    }, 
+    "defines": {
+        "NS_BLOCK_ASSERTIONS": 1, 
+        "__IPHONE_OS_VERSION_MIN_REQUIRED": 50000
+    }, 
+    "deps": [
+        "UIKit", 
+        "UIKit", 
+        "Foundation", 
+        "CoreGraphics"
+    ], 
+    "flags": [
+        "-DNS_BLOCK_ASSERTIONS=1", 
+        {
+            "flag": "-DNS_BLOCK_ASSERTIONS=1", 
+            "type": "c++"
+        }, 
+        "-fobjc-arc", 
+        "-fasm-blocks", 
+        {
+            "flag": "-std=gnu99", 
+            "not_type": "c++"
+        }, 
+        {
+            "flag": "-fgnu-keywords", 
+            "not_type": "c++"
+        }, 
+        "-fno-asm", 
+        "-fpascal-strings", 
+        "-Wno-deprecated-declarations", 
+        "-Wreturn-type", 
+        "-Wswitch", 
+        "-Wparentheses", 
+        "-Wformat", 
+        "-Wuninitialized", 
+        "-Wunused-value", 
+        "-Wunused-variable", 
+        {
+            "flag": "-Winvalid-offsetof", 
+            "type": "c++"
+        }, 
+        {
+            "flag": "-Wprotocol", 
+            "type": "objc"
+        }
+    ], 
+    "header_paths": [
+        {
+            "header_path": "InjectionDemo-generated-files.hmap", 
+            "hmap": {}, 
+            "type": "iquote"
+        }, 
+        {
+            "header_path": "InjectionDemo-own-target-headers.hmap", 
+            "hmap": {}, 
+            "type": "I"
+        }, 
+        {
+            "header_path": "InjectionDemo-all-target-headers.hmap", 
+            "hmap": {}, 
+            "type": "I"
+        }, 
+        {
+            "header_path": "InjectionDemo-project-headers.hmap", 
+            "hmap": {
+                "INAppDelegate.h": {
+                    "key": "INAppDelegate.h", 
+                    "prefix": "InjectionDemo/", 
+                    "suffix": "INAppDelegate.h"
+                }, 
+                "INRoseView.h": {
+                    "key": "INRoseView.h", 
+                    "prefix": "InjectionDemo/", 
+                    "suffix": "INRoseView.h"
+                }, 
+                "INViewController.h": {
+                    "key": "INViewController.h", 
+                    "prefix": "InjectionDemo/", 
+                    "suffix": "INViewController.h"
+                }, 
+                "InjectionDemo-Prefix.pch": {
+                    "key": "InjectionDemo-Prefix.pch", 
+                    "prefix": "InjectionDemo/", 
+                    "suffix": "InjectionDemo-Prefix.pch"
+                }
+            }, 
+            "type": "iquote"
+        }, 
+        {
+            "header_path": "/var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/tmpI1QPpl/BUILT_PRODUCTS_DIR/include", 
+            "type": "I"
+        }, 
+        {
+            "header_path": "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include", 
+            "type": "I"
+        }, 
+        {
+            "header_path": "/var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/tmpI1QPpl/DERIVED_FILE_DIR/armv7", 
+            "type": "I"
+        }, 
+        {
+            "header_path": "/var/folders/nh/gqmp6jxn4tn2tyhwqdcwcpkc0000gn/T/tmpI1QPpl/DERIVED_FILE_DIR", 
+            "type": "I"
+        }
+    ], 
+    "infoplists": [
+        "./InjectionDemo/InjectionDemo-Info.plist"
+    ], 
+    "java_libs": [], 
+    "java_res_dirs": [], 
+    "java_sourcepaths": [], 
+    "java_sources": [], 
+    "libs": [], 
+    "link_flags": [], 
+    "modules": [], 
+    "pchs": [
+        "./InjectionDemo/InjectionDemo-Prefix.pch"
+    ], 
+    "sources": [
+        {
+            "defines": {}, 
+            "flags": [], 
+            "header_paths": [], 
+            "language": "objc", 
+            "source": "InjectionDemo/INAppDelegate.m"
+        }, 
+        {
+            "defines": {}, 
+            "flags": [], 
+            "header_paths": [], 
+            "language": "objc", 
+            "source": "InjectionDemo/INRoseView.m"
+        }, 
+        {
+            "defines": {}, 
+            "flags": [], 
+            "header_paths": [], 
+            "language": "objc", 
+            "source": "InjectionDemo/INViewController.m"
+        }, 
+        {
+            "defines": {}, 
+            "flags": [], 
+            "header_paths": [], 
+            "language": "objc", 
+            "source": "InjectionDemo/main.m"
+        }
+    ], 
+    "storyboards": [], 
+    "type": "app", 
+    "version": "3", 
+    "xcdatamodels": [], 
+    "xcode_project": "InjectionDemo.xcodeproj", 
+    "xibs": [
+        {
+            "target": null, 
+            "xib": "InjectionDemo/en.lproj/INViewController.xib"
+        }
+    ]
+}

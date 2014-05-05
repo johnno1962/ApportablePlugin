@@ -196,7 +196,8 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -r Classes/APLiveCoding.* \"$INSTALL_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\"\n";
+			shellScript = "rm -rf InjectionDemo/build\ncp -r Classes/APLiveCoding.* InjectionDemo \"$INSTALL_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 

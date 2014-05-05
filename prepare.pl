@@ -12,6 +12,7 @@ use strict;
 my ($implementation) = @ARGV;
 my ($projectMain) = split "\n", `find . -name 'main.m*' -print`;
 
+system "chmod +w '$projectMain'";
 IO::File->new( ">> $projectMain" )->print( <<CODE );
 
 //#ifdef DEBUG

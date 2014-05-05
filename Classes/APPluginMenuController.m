@@ -1,5 +1,5 @@
 //
-//  APMenuConctroller.m
+//  APPluginMenuController.m
 //  ApportablePlugin
 //
 //  Created by John Holdsworth on 01/05/2014.
@@ -78,7 +78,9 @@
 
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
-    if ( [menuItem action] == @selector(patch:) )
+    if ( [menuItem action] == @selector(demo:) )
+        return YES;
+    else if ( [menuItem action] == @selector(patch:) )
         return [[self selectedFileSaving:NO] hasSuffix:@".m"];
     else
         return [self projectRoot] != nil;
@@ -164,6 +166,11 @@ static int revision;
 {
     (void)[[APLogController alloc] initNib:@"APLogWindow" project:[self projectRoot]
                                    command:@"apportable log"];
+}
+
+- (IBAction)demo:(id)sender
+{
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL fileURLWithPath:[[NSBundle bundleForClass:[self class]] pathForResource:@"InjectionDemo/InjectionDemo" ofType:@"xcodeproj"]]];
 }
 
 @end
