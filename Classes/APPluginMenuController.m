@@ -46,10 +46,11 @@
         self.lastTextView = object;
 }
 
-- (NSString *)selectedFile
+- (NSString *)selectedFileSaving:(BOOL)save
 {
     NSDocument *doc = [(id)[self.lastTextView delegate] document];
-    [doc saveDocument:self];
+    if ( save )
+        [doc saveDocument:self];
     return [[doc fileURL] path];
 }
 
@@ -78,7 +79,7 @@
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
     if ( [menuItem action] == @selector(patch:) )
-        return [[self selectedFile] hasSuffix:@".m"];
+        return [[self selectedFileSaving:NO] hasSuffix:@".m"];
     else
         return [self projectRoot] != nil;
 }
@@ -138,7 +139,7 @@ static int revision;
     task.currentDirectoryPath = [self projectRoot];
     task.arguments = @[@"-c", [NSString stringWithFormat:@"\"%@\" \"%@\" \"%@\" \"%@\" 2>&1",
                                [[NSBundle bundleForClass:[self class]] pathForResource:@"inject" ofType:@"pl"],
-                               [self projectRoot], shlib, [self selectedFile]]];
+                               [self projectRoot], shlib, [self selectedFileSaving:YES]]];
 
     task.standardInput = [[NSPipe alloc] init];
     task.standardOutput = [[NSPipe alloc] init];
