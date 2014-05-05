@@ -1,4 +1,4 @@
-# ![Icon](http://injectionforxcode.johnholdsworth.com/appdroid.png) An ApportablePlugin
+# An ApportablePlugin
 
 ### A plugin for working with apportable in Xcode
 
