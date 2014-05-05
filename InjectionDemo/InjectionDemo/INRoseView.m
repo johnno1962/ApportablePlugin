@@ -30,8 +30,17 @@ static float pcos( float phi ) {
 
 @implementation INRoseView
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [self animate:self];
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self selector:@selector(injectionBundleLoaded:) name:@"INJECTION_BUNDLE_NOTIFICATION" object:nil];
+}
+
+- (void)injectionBundleLoaded:(NSNotification *)notification
+{
+    NSLog( @"Injection Bundle has been loaded with code changes." );
+    [self performSelectorOnMainThread:@selector(setNeedsDisplay) withObject:nil waitUntilDone:NO];
 }
 
 // edit method and save to see your changes take effect //
@@ -87,7 +96,8 @@ static float pcos( float phi ) {
     CGColorSpaceRelease(cs);
 }
 
-- (void)animate {
+- (void)animate
+{
     if ( !self.animating )
         return;
 
@@ -102,7 +112,8 @@ static float pcos( float phi ) {
     [self performSelector:@selector(animate) withObject:nil afterDelay:.05*delay];
 }
 
-- (IBAction)animate:sender {
+- (IBAction)animate:sender
+{
     if ( (self.animating = !self.animating) )
         [self animate];
 }
