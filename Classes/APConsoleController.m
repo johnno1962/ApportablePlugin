@@ -82,7 +82,7 @@ static NSMutableArray *visibleControllers;
             [aTask waitUntilExit];
 
             dispatch_sync(dispatch_get_main_queue(), ^{
-                if ( [aTask terminationStatus] == 0 ) {
+                if ( [aTask terminationStatus] == EXIT_SUCCESS ) {
                     if ( !gdbCommand ) {
                         [self.window performSelector:@selector(close) withObject:nil afterDelay:3.];
                         self.task = nil;

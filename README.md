@@ -1,7 +1,5 @@
 # An ApportablePlugin
 
-### A plugin for working with apportable in Xcode
-
 A simple plugin to run apportable commands from inside Xcode as a starting point. To use, build the project 
 which will linstall to the correct directory and then restart Xcode. Open an apportable project and use 
 the new menu at the end of Xcode's "Product" menu to run the apportable debug/load/log/kill commands. 
@@ -25,9 +23,10 @@ onto the original class. Remember to "Apportable/Prepare" your project to make A
 ### Demo App
 
 A small demo app is included in the plugin which can be opened using the "Apportable/Demo" menu item.
-Run the applpication using "Apportable/Debug" and edit the file "INRoseView.m" to see how changing 
-the various hard coded values affects the displayed appearance demonstrating the new implementation
-has been loaded.
+Run the applpication using "Apportable/Load" and edit the file "INRoseView.m" and type ^X to see how 
+changing the various hard coded values affects the displayed appearance. This will open a window to
+"just_attach" to the process to load the changes using gdb commands. Do not close this window if 
+you want to make subseqent changes as patching only works in the just debug/attach window opened.
 
 ### MIT License
 

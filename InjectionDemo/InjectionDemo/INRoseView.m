@@ -22,6 +22,8 @@ static float pcos( float phi ) {
 
 @interface INRoseView ()
 
+@property (assign, nonatomic) IBOutlet UISlider *slider;
+
 @property (assign, nonatomic) float roseOffset;
 @property (assign, nonatomic) float colorOffset;
 @property (assign, nonatomic) BOOL animating;
@@ -43,12 +45,17 @@ static float pcos( float phi ) {
     [self performSelectorOnMainThread:@selector(setNeedsDisplay) withObject:nil waitUntilDone:NO];
 }
 
+- (IBAction)sliderChange:(id)sender
+{
+    [self setNeedsDisplay];
+}
+
 // edit method and save to see your changes take effect //
 - (void)drawRect:(CGRect)rect
 {
     // affects "squareness" of the spiral
     // reference to control panel parameter
-    power = 1.;
+    power = [self.slider value];
 
     // spacing between lines
     float dphi = .1;

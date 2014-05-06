@@ -76,24 +76,26 @@
     return [matches count] ? [documentPath substringWithRange:[matches[0] rangeAtIndex:1]] : nil;
 }
 
+static __weak APConsoleController *debugger;
+static NSString *debugProjectRoot;
+static int revision;
+
 - (BOOL)validateMenuItem:(NSMenuItem *)menuItem
 {
     if ( [menuItem action] == @selector(demo:) )
         return YES;
     else if ( [menuItem action] == @selector(patch:) )
-        return [[self selectedFileSaving:NO] hasSuffix:@".m"];
+        return [[self selectedFileSaving:NO] hasSuffix:@".m"] && debugProjectRoot;
     else
         return [self projectRoot] != nil;
 }
-
-static __weak APConsoleController *debugger;
-static int revision;
 
 - (void)startDebugger:(NSString *)command
 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-unsafe-retained-assign"
-    debugger = [[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot]
+    debugger = [[APConsoleController alloc] initNib:@"APConsoleWindow"
+                                            project:debugProjectRoot
                                             command:command];
 #pragma clang diagnostic pop
 }
@@ -111,10 +113,15 @@ static int revision;
 
     [task launch];
     [task waitUntilExit];
+
+    if ( [task terminationStatus] != EXIT_SUCCESS )
+        [[NSAlert alertWithMessageText:@"ApportablePlugin" defaultButton:@"OK" alternateButton:nil otherButton:nil
+             informativeTextWithFormat:@"%@", @"Error preparing project, consult console."] runModal];
 }
 
 - (IBAction)debug:sender
 {
+    debugProjectRoot = [self projectRoot];
     [self startDebugger:@"apportable debug"];
     [debugger sendTask:@"c\n"];
 }
@@ -138,10 +145,10 @@ static int revision;
     NSTask *task = [[NSTask alloc] init];
 
     task.launchPath = @"/bin/bash";
-    task.currentDirectoryPath = [self projectRoot];
+    task.currentDirectoryPath = debugProjectRoot;
     task.arguments = @[@"-c", [NSString stringWithFormat:@"\"%@\" \"%@\" \"%@\" \"%@\" 2>&1",
                                [[NSBundle bundleForClass:[self class]] pathForResource:@"inject" ofType:@"pl"],
-                               [self projectRoot], shlib, [self selectedFileSaving:YES]]];
+                               debugProjectRoot, shlib, [self selectedFileSaving:YES]]];
 
     task.standardInput = [[NSPipe alloc] init];
     task.standardOutput = [[NSPipe alloc] init];
@@ -152,6 +159,7 @@ static int revision;
 
 - (IBAction)load:sender
 {
+    debugProjectRoot = [self projectRoot];
     (void)[[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot]
                                        command:@"apportable load"];
 }
