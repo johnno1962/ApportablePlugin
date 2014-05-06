@@ -11,6 +11,8 @@
 @interface APLogController : APConsoleController
 
 @property (nonatomic,assign) IBOutlet NSSearchField *filter;
+@property (nonatomic,assign) IBOutlet NSButton *paused;
+
 @property (nonatomic,strong) NSMutableArray *lineBuffer;
 
 @end

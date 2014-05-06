@@ -17,6 +17,8 @@
 		BB5CF6371912DBD00052E10B /* APTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CF6301912DBD00052E10B /* APTextView.m */; };
 		BB5CF63A1912DCC50052E10B /* APPluginMenuController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB5CF6391912DCC50052E10B /* APPluginMenuController.m */; };
 		BB82F0CD1913D15F0015AE7A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BB82F0CC1913D15F0015AE7A /* README.md */; };
+		BB9D655F19194D9E00ECF4B3 /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = BB9D655D19194D9E00ECF4B3 /* pause.png */; };
+		BB9D656019194D9E00ECF4B3 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = BB9D655E19194D9E00ECF4B3 /* play.png */; };
 		BBF5D8E31912DFCA0037CE2E /* APPluginMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBF5D8E21912DFCA0037CE2E /* APPluginMenuController.xib */; };
 		DA1B5D020E64686800921439 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -42,6 +44,8 @@
 		BB5CF6391912DCC50052E10B /* APPluginMenuController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APPluginMenuController.m; sourceTree = "<group>"; };
 		BB63E0F8160CA89800E95F5D /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		BB82F0CC1913D15F0015AE7A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		BB9D655D19194D9E00ECF4B3 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
+		BB9D655E19194D9E00ECF4B3 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
 		BBF5D8E21912DFCA0037CE2E /* APPluginMenuController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = APPluginMenuController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -82,6 +86,8 @@
 		089C167CFE841241C02AAC07 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				BB9D655D19194D9E00ECF4B3 /* pause.png */,
+				BB9D655E19194D9E00ECF4B3 /* play.png */,
 				BB82F0CC1913D15F0015AE7A /* README.md */,
 				8D5B49B7048680CD000E48DA /* Info.plist */,
 				BB553A6B191676A50005E800 /* prepare.pl */,
@@ -174,8 +180,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				BB5CF6331912DBD00052E10B /* APConsoleWindow.xib in Resources */,
+				BB9D656019194D9E00ECF4B3 /* play.png in Resources */,
 				BB5CF6351912DBD00052E10B /* APLogWindow.xib in Resources */,
 				BB82F0CD1913D15F0015AE7A /* README.md in Resources */,
+				BB9D655F19194D9E00ECF4B3 /* pause.png in Resources */,
 				BB23108519158D500008E28B /* inject.pl in Resources */,
 				BBF5D8E31912DFCA0037CE2E /* APPluginMenuController.xib in Resources */,
 				BB286F5F19167B92001257FC /* prepare.pl in Resources */,

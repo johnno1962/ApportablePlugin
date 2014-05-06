@@ -43,9 +43,29 @@
         _lineBuffer = [[NSMutableArray alloc] init];
     [self.lineBuffer addObjectsFromArray:newLlines];
 
+    if ( [self.paused state] )
+        return;
+
     NSString *filtered = [self filterLinesByCurrentRegularExpression:newLlines];
     if ( [filtered length] )
         [super insertText:filtered];
+}
+
+- (IBAction)pausePlay:sender
+{
+    if ( [self.paused state] ) {
+        [self.paused setImage:[self imageNamed:@"play"]];
+    }
+    else {
+        [self.paused setImage:[self imageNamed:@"pause"]];
+        [self filterChange:self];
+    }
+}
+
+- (NSImage *)imageNamed:(NSString *)name
+{
+    return [[NSImage alloc] initWithContentsOfFile:[[NSBundle bundleForClass:[self class]]
+                                                    pathForResource:name ofType:@"png"]];
 }
 
 @end

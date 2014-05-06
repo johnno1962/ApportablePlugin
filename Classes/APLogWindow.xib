@@ -10,6 +10,7 @@
                 <outlet property="console" destination="hbS-B6-9CN" id="TAh-sz-TzJ"/>
                 <outlet property="filter" destination="bNx-ec-jQ7" id="7AE-cE-QU0"/>
                 <outlet property="menuItem" destination="JXe-4x-by7" id="Adx-Qq-ASq"/>
+                <outlet property="paused" destination="Jre-x7-ibo" id="5sJ-mB-0Sf"/>
                 <outlet property="separator" destination="lX8-Zp-hnl" id="Ieg-OQ-sUT"/>
                 <outlet property="window" destination="QvC-M9-y7g" id="ubl-AK-ReZ"/>
             </connections>
@@ -37,10 +38,10 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <size key="minSize" width="736" height="270"/>
-                                    <size key="maxSize" width="736" height="10000000"/>
+                                    <size key="maxSize" width="753" height="10000000"/>
                                     <color key="insertionPointColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                     <size key="minSize" width="736" height="270"/>
-                                    <size key="maxSize" width="736" height="10000000"/>
+                                    <size key="maxSize" width="753" height="10000000"/>
                                     <connections>
                                         <outlet property="delegate" destination="-2" id="lL8-xm-z4H"/>
                                     </connections>
@@ -70,6 +71,17 @@
                             <outlet property="delegate" destination="-2" id="8fO-c5-VaS"/>
                         </connections>
                     </searchField>
+                    <button verticalHuggingPriority="750" id="Jre-x7-ibo">
+                        <rect key="frame" x="542" y="227" width="43" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" bezelStyle="rounded" image="pause.png" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="ubm-Cj-uDQ">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="pausePlay:" target="-2" id="FV5-wV-Hv5"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <connections>
@@ -84,4 +96,7 @@
         </menuItem>
         <menuItem isSeparatorItem="YES" id="lX8-Zp-hnl"/>
     </objects>
+    <resources>
+        <image name="pause.png" width="128" height="128"/>
+    </resources>
 </document>
