@@ -141,6 +141,9 @@ static int revision;
         return;
     }
 
+    if ( !debugProjectRoot )
+        debugProjectRoot = [self projectRoot];
+
     NSString *shlib = [NSString stringWithFormat:@"/data/local/tmp/APLiveCoding%d.so", ++revision];
     NSTask *task = [[NSTask alloc] init];
 
