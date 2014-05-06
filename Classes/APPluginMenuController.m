@@ -103,20 +103,10 @@ static int revision;
 - (IBAction)prepare:sender
 {
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    NSTask *task = [[NSTask alloc] init];
-
-    task.launchPath = @"/bin/bash";
-    task.currentDirectoryPath = [self projectRoot];
-    task.arguments = @[@"-c", [NSString stringWithFormat:@"\"%@\" \"%@\" 2>&1",
-                               [bundle pathForResource:@"prepare" ofType:@"pl"],
-                               [bundle pathForResource:@"APLiveCoding" ofType:@"m"]]];
-
-    [task launch];
-    [task waitUntilExit];
-
-    if ( [task terminationStatus] != EXIT_SUCCESS )
-        [[NSAlert alertWithMessageText:@"ApportablePlugin" defaultButton:@"OK" alternateButton:nil otherButton:nil
-             informativeTextWithFormat:@"%@", @"Error preparing project, consult console."] runModal];
+    (void)[[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot]
+                                       command:[NSString stringWithFormat:@"\"%@\" \"%@\" 2>&1",
+                                                [bundle pathForResource:@"prepare" ofType:@"pl"],
+                                                [bundle pathForResource:@"APLiveCoding" ofType:@"m"]]];
 }
 
 - (IBAction)debug:sender

@@ -12,6 +12,8 @@ use strict;
 my ($implementation) = @ARGV;
 my ($projectMain) = split "\n", `find . -name 'main.m*' -print`;
 
+print "Patching: $projectMain\n";
+
 system "chmod +w '$projectMain'";
 IO::File->new( ">> $projectMain" )->print( <<CODE );
 
