@@ -8,9 +8,9 @@ log" window can be filtered by entering a regular expression. Windows close auto
 
 ### Live Coding
 
-The plugin now also supports live coding where you can make changes the implementation of a running
-program. The main.m of the project project must first have been slightly patched by using the menu item
-"Product/Apportable/Prepare". After this, when the program is running or being debugged,
+The plugin now also supports live coding where you can make changes to the implementation any class in a
+running program. The main.m of the project project must first have been slightly patched by using the 
+menu item "Product/Apportable/Prepare". After this, when the program is running or being debugged,
 changes to the current selected file can be applied using the "Apportable/Patch" command. As this
 requires a debugging connection, if one is not already open the plugin will attach to the program.
 
@@ -26,7 +26,7 @@ A small demo app is included in the plugin which can be opened using the "Apport
 Run the applpication using "Apportable/Load" and edit the file "INRoseView.m" and type ^X to see how 
 changing the various hard coded values affects the displayed appearance. This will open a window to
 "just_attach" to the process to load the changes using gdb commands. Do not close this window if 
-you want to make subseqent changes as patching only works in the just debug/attach window opened.
+you want to make subseqent changes as patching only works in the first debug/attach window opened.
 
 ### MIT License
 
