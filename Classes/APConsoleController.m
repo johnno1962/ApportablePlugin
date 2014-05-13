@@ -71,9 +71,8 @@ static NSMutableArray *visibleControllers;
                 NSData *outputData = [readHandle availableData];
                 NSString *output = [[NSString alloc] initWithData:outputData encoding:NSUTF8StringEncoding];
 
-                dispatch_async(dispatch_get_main_queue(), ^{
+                if ( output )
                     [self insertText:output];
-                });
 
                 [readHandle waitForDataInBackgroundAndNotify];
             }];
@@ -107,8 +106,10 @@ static NSMutableArray *visibleControllers;
  */
 - (void)insertText:(NSString *)output
 {
-    [self.console setSelectedRange:NSMakeRange([self.console.string length], 0)];
-    [self.console insertText:output];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.console setSelectedRange:NSMakeRange([self.console.string length], 0)];
+        [self.console insertText:output];
+    });
 }
 
 /*

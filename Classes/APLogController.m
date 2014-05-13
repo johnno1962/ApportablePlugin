@@ -34,13 +34,29 @@
 
 - (void)insertText:(NSString *)output
 {
-    NSMutableArray *newLlines = [[output componentsSeparatedByString:@"\n"] mutableCopy];
+    if ( !self.incoming )
+        self.incoming = [[NSMutableString alloc] init];
+    [self.incoming appendString:output];
 
-    if ( [newLlines count] && [newLlines[[newLlines count]-1] length] == 0 )
-        [newLlines removeObjectAtIndex:[newLlines count]-1];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self insertIncoming];
+    });
+}
 
-    if ( !_lineBuffer )
-        _lineBuffer = [[NSMutableArray alloc] init];
+- (void)insertIncoming
+{
+    if ( !self.incoming )
+        return;
+
+    NSMutableArray *newLlines = [[self.incoming componentsSeparatedByString:@"\n"] mutableCopy];
+    self.incoming = nil;
+
+    NSUInteger lineCount = [newLlines count];
+    if ( lineCount && [newLlines[lineCount-1] length] == 0 )
+        [newLlines removeObjectAtIndex:lineCount-1];
+
+    if ( !self.lineBuffer )
+        self.lineBuffer = [[NSMutableArray alloc] init];
     [self.lineBuffer addObjectsFromArray:newLlines];
 
     if ( [self.paused state] )

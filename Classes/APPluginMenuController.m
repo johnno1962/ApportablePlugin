@@ -84,8 +84,10 @@ static int revision;
 {
     if ( [menuItem action] == @selector(demo:) )
         return YES;
-    else if ( [menuItem action] == @selector(patch:) )
-        return [[self selectedFileSaving:NO] hasSuffix:@".m"] && debugProjectRoot;
+    else if ( [menuItem action] == @selector(patch:) ) {
+        NSString *selectedFile = [self selectedFileSaving:NO];
+        return ([selectedFile hasSuffix:@".m"] || [selectedFile hasSuffix:@".mm"]) && debugProjectRoot;
+    }
     else
         return [self projectRoot] != nil;
 }
@@ -105,7 +107,7 @@ static int revision;
     NSBundle *bundle = [NSBundle bundleForClass:[self class]];
     (void)[[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot]
                                        command:[NSString stringWithFormat:@"\"%@\" \"%@\" 2>&1",
-                                                [bundle pathForResource:@"prepare" ofType:@"pl"],
+                                                [bundle pathForResource:@"prepare" ofType:@"py"],
                                                 [bundle pathForResource:@"APLiveCoding" ofType:@"m"]]];
 }
 
@@ -134,13 +136,13 @@ static int revision;
     if ( !debugProjectRoot )
         debugProjectRoot = [self projectRoot];
 
-    NSString *shlib = [NSString stringWithFormat:@"/data/local/tmp/APLiveCoding%d.so", ++revision];
+    NSString *shlib = [NSString stringWithFormat:@"/data/local/tmp/APLiveCoding%d.so", revision++];
     NSTask *task = [[NSTask alloc] init];
 
     task.launchPath = @"/bin/bash";
     task.currentDirectoryPath = debugProjectRoot;
     task.arguments = @[@"-c", [NSString stringWithFormat:@"\"%@\" \"%@\" \"%@\" \"%@\" 2>&1",
-                               [[NSBundle bundleForClass:[self class]] pathForResource:@"inject" ofType:@"pl"],
+                               [[NSBundle bundleForClass:[self class]] pathForResource:@"inject" ofType:@"py"],
                                debugProjectRoot, shlib, [self selectedFileSaving:YES]]];
 
     task.standardInput = [[NSPipe alloc] init];
