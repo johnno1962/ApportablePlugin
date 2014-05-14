@@ -15,5 +15,6 @@
 
 @property (nonatomic,strong) NSMutableArray *lineBuffer;
 @property (atomic,strong) NSMutableString *incoming;
+@property (atomic,strong) NSLock *lock;
 
 @end

@@ -34,13 +34,19 @@
 
 - (void)insertText:(NSString *)output
 {
+    if ( !self.lock )
+        self.lock = [[NSLock alloc] init];
+
+    [self.lock lock];
     if ( !self.incoming )
         self.incoming = [[NSMutableString alloc] init];
     [self.incoming appendString:output];
+    [self.lock unlock];
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [self insertIncoming];
     });
+
 }
 
 - (void)insertIncoming
@@ -48,8 +54,10 @@
     if ( !self.incoming )
         return;
 
+    [self.lock lock];
     NSMutableArray *newLlines = [[self.incoming componentsSeparatedByString:@"\n"] mutableCopy];
     self.incoming = nil;
+    [self.lock unlock];
 
     NSUInteger lineCount = [newLlines count];
     if ( lineCount && [newLlines[lineCount-1] length] == 0 )
@@ -59,12 +67,12 @@
         self.lineBuffer = [[NSMutableArray alloc] init];
     [self.lineBuffer addObjectsFromArray:newLlines];
 
-    if ( [self.paused state] )
-        return;
+    if ( ![self.paused state] ) {
+        NSString *filtered = [self filterLinesByCurrentRegularExpression:newLlines];
+        if ( [filtered length] )
+            [super insertText:filtered];
+    }
 
-    NSString *filtered = [self filterLinesByCurrentRegularExpression:newLlines];
-    if ( [filtered length] )
-        [super insertText:filtered];
 }
 
 - (IBAction)pausePlay:sender
