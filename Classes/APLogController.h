@@ -14,6 +14,6 @@
 @property (nonatomic,assign) IBOutlet NSButton *paused;
 
 @property (nonatomic,strong) NSMutableArray *lineBuffer;
-@property (nonatomic,strong) NSMutableString *incoming;
+@property (atomic,strong) NSMutableString *incoming;
 
 @end

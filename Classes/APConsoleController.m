@@ -25,8 +25,15 @@ static NSMutableArray *visibleControllers;
         // need to add to Windows menu manually
         // for some reason this is not reliable
         self.menuItem.title = command;
-        [[self windowMenu] addItem:self.separator];
-        [[self windowMenu] addItem:self.menuItem];
+        NSMenu *windowMenu = [self windowMenu];
+        NSInteger where = [windowMenu indexOfItemWithTitle:@"Bring All to Front"];
+        if ( where <= 0 )
+            NSLog( @"AppportablePlugin: Could not locate Window menu item" );
+        else
+        {
+            [windowMenu insertItem:self.separator atIndex:where+1];
+            [windowMenu insertItem:self.menuItem atIndex:where+2];
+        }
 
         self.window.title = command;
         self.window.representedFilename = projectRoot;
