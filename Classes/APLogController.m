@@ -8,6 +8,17 @@
 
 #import "APLogController.h"
 
+@interface APLogController()
+
+@property (nonatomic,assign) IBOutlet NSSearchField *filter;
+@property (nonatomic,assign) IBOutlet NSButton *paused;
+
+@property (nonatomic,strong) NSMutableArray *lineBuffer;
+@property (atomic,strong) NSMutableString *incoming;
+@property (atomic,strong) NSLock *lock;
+
+@end
+
 @implementation APLogController
 
 - (NSString *)filterLinesByCurrentRegularExpression:(NSArray *)lines

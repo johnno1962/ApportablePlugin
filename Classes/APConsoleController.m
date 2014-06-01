@@ -10,6 +10,18 @@
 
 static NSMutableArray *visibleControllers;
 
+@interface APConsoleController()
+
+@property (nonatomic,strong) IBOutlet NSWindow *window;
+@property (nonatomic,strong) IBOutlet NSMenuItem *separator;
+@property (nonatomic,strong) IBOutlet NSMenuItem *menuItem;
+
+@property (nonatomic,strong) NSMutableArray *inputHistory;
+@property (nonatomic,assign) NSUInteger historyPointer;
+@property (nonatomic,assign) NSUInteger startBuffered;
+
+@end
+
 @implementation APConsoleController
 
 - (instancetype)initNib:(NSString *)nibName project:(NSString *)projectRoot command:(NSString *)command
@@ -22,22 +34,25 @@ static NSMutableArray *visibleControllers;
         if ( ![[NSBundle bundleForClass:[self class]] loadNibNamed:nibName owner:self topLevelObjects:NULL] )
             NSLog( @"APConsoleController: Could not load interface '%@'", nibName );
 
-        // need to add to Windows menu manually
-        // for some reason this is not reliable
-        self.menuItem.title = command;
-        NSMenu *windowMenu = [self windowMenu];
-        NSInteger where = [windowMenu indexOfItemWithTitle:@"Bring All to Front"];
-        if ( where <= 0 )
-            NSLog( @"AppportablePlugin: Could not locate Window menu item" );
-        else
-        {
-            [windowMenu insertItem:self.separator atIndex:where+1];
-            [windowMenu insertItem:self.menuItem atIndex:where+2];
-        }
+        if ( self.window ) {
+            // need to add to Windows menu manually
+            // for some reason this is not reliable
+            self.menuItem.title = command;
 
-        self.window.title = command;
-        self.window.representedFilename = projectRoot;
-        [self.window makeKeyAndOrderFront:self];
+            NSMenu *windowMenu = [self windowMenu];
+            NSInteger where = [windowMenu indexOfItemWithTitle:@"Bring All to Front"];
+            if ( where <= 0 )
+                NSLog( @"AppportablePlugin: Could not locate Window menu item" );
+            else
+            {
+                [windowMenu insertItem:self.separator atIndex:where+1];
+                [windowMenu insertItem:self.menuItem atIndex:where+2];
+            }
+
+            self.window.title = command;
+            self.window.representedFilename = projectRoot;
+            [self.window makeKeyAndOrderFront:self];
+        }
 
         self.task = [[NSTask alloc] init];
         self.task.launchPath = @"/bin/bash";
@@ -88,7 +103,9 @@ static NSMutableArray *visibleControllers;
             [aTask waitUntilExit];
 
             dispatch_sync(dispatch_get_main_queue(), ^{
-                if ( [aTask terminationStatus] == EXIT_SUCCESS ) {
+                if ( !self.window && !gdbCommand )
+                    [self windowWillClose:nil];
+                else if ( [aTask terminationStatus] == EXIT_SUCCESS ) {
                     if ( !gdbCommand ) {
                         [self.window performSelector:@selector(close) withObject:nil afterDelay:3.];
                         self.task = nil;

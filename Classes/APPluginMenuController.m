@@ -7,21 +7,35 @@
 //
 
 #import "APPluginMenuController.h"
+
+#import "APDebugController.h"
 #import "APLogController.h"
+
+static APPluginMenuController *apportablePlugin;
+
+@interface APPluginMenuController()
+
+@property (nonatomic,strong) IBOutlet NSMenuItem *apportableMenu;
+@property (nonatomic,strong) NSTextView *lastTextView;
+
+@end
 
 @implementation APPluginMenuController
 
 + (void)pluginDidLoad:(NSBundle *)plugin
 {
-    static APPluginMenuController *apportablePlugin;
 	static dispatch_once_t onceToken;
-
 	dispatch_once(&onceToken, ^{
 		apportablePlugin = [[self alloc] init];
         [[NSNotificationCenter defaultCenter] addObserver:apportablePlugin
                                                  selector:@selector(applicationDidFinishLaunching:)
                                                      name:NSApplicationDidFinishLaunchingNotification object:nil];
 	});
+}
+
++ (APPluginMenuController *)sharedPlugin
+{
+    return apportablePlugin;
 }
 
 - (void)applicationDidFinishLaunching:(NSNotification *)notification
@@ -56,13 +70,13 @@
 
 - (NSString *)projectRoot
 {
-    id delegate = [[NSApp keyWindow] delegate];
-    if ( ![delegate respondsToSelector:@selector(document)] )
-        delegate = self.lastDelegate;
+    NSWindow *keyWindow = [NSApp keyWindow];
+    if ( ![keyWindow respondsToSelector:@selector(document)] )
+        keyWindow = self.lastKeyWindow;
     else
-        self.lastDelegate = delegate;
+        self.lastKeyWindow = keyWindow;
 
-    NSDocument *workspace = [delegate document];
+    NSDocument *workspace = [(id)[self.lastKeyWindow delegate] document];
     if ( ![workspace isKindOfClass:NSClassFromString(@"IDEWorkspaceDocument")] )
         return nil;
 
@@ -96,9 +110,9 @@ static int revision;
 {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-unsafe-retained-assign"
-    debugger = [[APConsoleController alloc] initNib:@"APConsoleWindow"
-                                            project:debugProjectRoot
-                                            command:command];
+    debugger = [[APDebugController alloc] initNib:@"APDebugController"
+                                          project:debugProjectRoot
+                                          command:command];
 #pragma clang diagnostic pop
 }
 
@@ -120,6 +134,8 @@ static int revision;
 
 - (IBAction)attach:sender
 {
+    if ( !debugProjectRoot )
+        debugProjectRoot = [self projectRoot];
     [self startDebugger:@"apportable just_attach"];
 }
 
@@ -155,14 +171,14 @@ static int revision;
 - (IBAction)load:sender
 {
     debugProjectRoot = [self projectRoot];
-    (void)[[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot]
-                                       command:@"apportable load"];
+    (void)[[APDebugController alloc] initNib:@"APDebugController" project:[self projectRoot]
+                                     command:@"apportable load"];
 }
 
 - (IBAction)kill:sender
 {
-    (void)[[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot]
-                                       command:@"apportable kill"];
+    (void)[[APDebugController alloc] initNib:@"APDebugController" project:[self projectRoot]
+                                     command:@"apportable kill"];
 }
 
 - (IBAction)log:sender

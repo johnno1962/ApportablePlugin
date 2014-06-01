@@ -19,6 +19,8 @@
 		BB82F0CD1913D15F0015AE7A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = BB82F0CC1913D15F0015AE7A /* README.md */; };
 		BB9D655F19194D9E00ECF4B3 /* pause.png in Resources */ = {isa = PBXBuildFile; fileRef = BB9D655D19194D9E00ECF4B3 /* pause.png */; };
 		BB9D656019194D9E00ECF4B3 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = BB9D655E19194D9E00ECF4B3 /* play.png */; };
+		BBB0DB26193B505200B5C0D8 /* APDebugController.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB0DB25193B505200B5C0D8 /* APDebugController.m */; };
+		BBB0DB28193B506D00B5C0D8 /* APDebugController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBB0DB27193B506D00B5C0D8 /* APDebugController.xib */; };
 		BBF5D8E31912DFCA0037CE2E /* APPluginMenuController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BBF5D8E21912DFCA0037CE2E /* APPluginMenuController.xib */; };
 		DA1B5D020E64686800921439 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 089C1672FE841209C02AAC07 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -46,6 +48,9 @@
 		BB82F0CC1913D15F0015AE7A /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		BB9D655D19194D9E00ECF4B3 /* pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pause.png; sourceTree = "<group>"; };
 		BB9D655E19194D9E00ECF4B3 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
+		BBB0DB24193B505200B5C0D8 /* APDebugController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APDebugController.h; sourceTree = "<group>"; };
+		BBB0DB25193B505200B5C0D8 /* APDebugController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APDebugController.m; sourceTree = "<group>"; };
+		BBB0DB27193B506D00B5C0D8 /* APDebugController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = APDebugController.xib; sourceTree = "<group>"; };
 		BBF5D8E21912DFCA0037CE2E /* APPluginMenuController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = APPluginMenuController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -113,6 +118,9 @@
 				BB5CF6271912DBD00052E10B /* APConsoleController.h */,
 				BB5CF6281912DBD00052E10B /* APConsoleController.m */,
 				BB5CF6291912DBD00052E10B /* APConsoleWindow.xib */,
+				BBB0DB24193B505200B5C0D8 /* APDebugController.h */,
+				BBB0DB25193B505200B5C0D8 /* APDebugController.m */,
+				BBB0DB27193B506D00B5C0D8 /* APDebugController.xib */,
 				BB5CF62A1912DBD00052E10B /* APLogController.h */,
 				BB5CF62B1912DBD00052E10B /* APLogController.m */,
 				BB5CF62C1912DBD00052E10B /* APLogWindow.xib */,
@@ -181,6 +189,7 @@
 			files = (
 				BB5CF6331912DBD00052E10B /* APConsoleWindow.xib in Resources */,
 				BB9D656019194D9E00ECF4B3 /* play.png in Resources */,
+				BBB0DB28193B506D00B5C0D8 /* APDebugController.xib in Resources */,
 				BB5CF6351912DBD00052E10B /* APLogWindow.xib in Resources */,
 				BB82F0CD1913D15F0015AE7A /* README.md in Resources */,
 				BB26AE9F191FF6DF00702773 /* prepare.py in Resources */,
@@ -217,6 +226,7 @@
 				BB5CF6371912DBD00052E10B /* APTextView.m in Sources */,
 				BB5CF63A1912DCC50052E10B /* APPluginMenuController.m in Sources */,
 				BB5CF6321912DBD00052E10B /* APConsoleController.m in Sources */,
+				BBB0DB26193B505200B5C0D8 /* APDebugController.m in Sources */,
 				BB5CF6341912DBD00052E10B /* APLogController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

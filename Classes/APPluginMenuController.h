@@ -10,8 +10,8 @@
 
 @interface APPluginMenuController : NSObject
 
-@property (nonatomic,strong) IBOutlet NSMenuItem *apportableMenu;
-@property (nonatomic,strong) NSTextView *lastTextView;
-@property (nonatomic,strong) id lastDelegate;
+@property (nonatomic,strong) NSWindow *lastKeyWindow;
+
++ (APPluginMenuController *)sharedPlugin;
 
 @end
