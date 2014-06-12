@@ -171,8 +171,8 @@ static int revision;
 - (IBAction)load:sender
 {
     debugProjectRoot = [self projectRoot];
-    (void)[[APDebugController alloc] initNib:@"APDebugController" project:[self projectRoot]
-                                     command:@"apportable load"];
+    (void)[[APConsoleController alloc] initNib:@"APConsoleWindow" project:[self projectRoot]
+                                       command:@"apportable load"];
 }
 
 - (IBAction)kill:sender

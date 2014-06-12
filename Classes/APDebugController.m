@@ -21,9 +21,10 @@
 
 @property (nonatomic,retain) NSButton *pauseResume;
 @property (nonatomic,retain) NSTextView *debugger;
-@property (nonatomic,retain) id pauseTarget;
 
 @end
+
+static id pauseTarget;
 
 @implementation APDebugController
 
@@ -38,7 +39,8 @@
     self.scrollView.frame = splitView.frame;
     [[splitView superview] addSubview:self.scrollView];
 
-    self.pauseTarget = [self.pauseResume target];
+    if ( [[[self.pauseResume target] class] respondsToSelector:@selector(iconImage_pause)] )
+        pauseTarget = [self.pauseResume target];
     self.pauseResume.enabled = TRUE;
     self.pauseResume.target = self;
     return self;
@@ -58,20 +60,20 @@
 
 - (void)pauseOrResume:sender
 {
-    if ( [self.pauseResume image] == [[self.pauseTarget class] iconImage_pause] ) {
-        self.pauseResume.image = [[self.pauseTarget class] iconImage_resume];
+    if ( [self.pauseResume image] == [[pauseTarget class] iconImage_pause] ) {
+        self.pauseResume.image = [[pauseTarget class] iconImage_resume];
         [self.task interrupt];
     }
     else {
-        self.pauseResume.image = [[self.pauseTarget class] iconImage_pause];
+        self.pauseResume.image = [[pauseTarget class] iconImage_pause];
         [self sendTask:@"c\n"];
     }
 }
 
 - (void)windowWillClose:(NSNotification *)notification
 {
-    self.pauseResume.image = [[self.pauseTarget class] iconImage_pause];
-    self.pauseResume.target = self.pauseTarget;
+    self.pauseResume.image = [[pauseTarget class] iconImage_pause];
+    self.pauseResume.target = pauseTarget;
     [self.scrollView removeFromSuperview];
     [super windowWillClose:notification];
 }

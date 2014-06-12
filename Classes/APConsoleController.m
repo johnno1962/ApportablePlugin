@@ -103,9 +103,10 @@ static NSMutableArray *visibleControllers;
             [aTask waitUntilExit];
 
             dispatch_sync(dispatch_get_main_queue(), ^{
+                BOOL succeeded = [aTask terminationStatus] == EXIT_SUCCESS;
                 if ( !self.window && !gdbCommand )
-                    [self windowWillClose:nil];
-                else if ( [aTask terminationStatus] == EXIT_SUCCESS ) {
+                    [self performSelector:@selector(windowWillClose:) withObject:nil afterDelay:succeeded?0.:5.];
+                else if ( succeeded ) {
                     if ( !gdbCommand ) {
                         [self.window performSelector:@selector(close) withObject:nil afterDelay:3.];
                         self.task = nil;
